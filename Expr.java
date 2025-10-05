@@ -2,75 +2,75 @@ package src;
 
 public abstract class Expr {
     // Part 1: direct evaluation
-    abstract float eval();
+    public abstract float eval();
 
     // Part 2: visitor pattern
-    abstract <R> R accept(ExprVisitor<R> v);
+    public abstract <R> R accept(ExprVisitor<R> v);
 }
 
 abstract class BinaryExpr extends Expr {
-    protected final Expr e1;
-    protected final Expr e2;
+    protected final Expr left;
+    protected final Expr right;
 
-    public BinaryExpr(Expr e1, Expr e2) {
-        this.e1 = e1;
-        this.e2 = e2;
+    public BinaryExpr(Expr left, Expr right) {
+        this.left = left;
+        this.right = right;
     }
 
-    public Expr getE1() { return e1; }
-    public Expr getE2() { return e2; }
+    public Expr getLeft() { return left; }
+    public Expr getRight() { return right; }
 }
 
 class PlusExpr extends BinaryExpr {
-    public PlusExpr(Expr e1, Expr e2) { super(e1, e2); }
+    public PlusExpr(Expr left, Expr right) { super(left, right); }
 
     @Override
-    float eval() { return e1.eval() + e2.eval(); }
+    public float eval() { return left.eval() + right.eval(); }
 
     @Override
-    <R> R accept(ExprVisitor<R> v) { return v.visitPlus(this); }
+    public <R> R accept(ExprVisitor<R> v) { return v.visitPlus(this); }
 }
 
 class MinusExpr extends BinaryExpr {
-    public MinusExpr(Expr e1, Expr e2) { super(e1, e2); }
+    public MinusExpr(Expr left, Expr right) { super(left, right); }
 
     @Override
-    float eval() { return e1.eval() - e2.eval(); }
+    public float eval() { return left.eval() - right.eval(); }
 
     @Override
-    <R> R accept(ExprVisitor<R> v) { return v.visitMinus(this); }
+    public <R> R accept(ExprVisitor<R> v) { return v.visitMinus(this); }
 }
 
 class TimesExpr extends BinaryExpr {
-    public TimesExpr(Expr e1, Expr e2) { super(e1, e2); }
+    public TimesExpr(Expr left, Expr right) { super(left, right); }
 
     @Override
-    float eval() { return e1.eval() * e2.eval(); }
+    public float eval() { return left.eval() * right.eval(); }
 
     @Override
-    <R> R accept(ExprVisitor<R> v) { return v.visitTimes(this); }
+    public <R> R accept(ExprVisitor<R> v) { return v.visitTimes(this); }
 }
 
 class DivExpr extends BinaryExpr {
-    public DivExpr(Expr e1, Expr e2) { super(e1, e2); }
+    public DivExpr(Expr left, Expr right) { super(left, right); }
 
     @Override
-    float eval() { return e1.eval() / e2.eval(); }
+    public float eval() { return left.eval() / right.eval(); }
 
     @Override
-    <R> R accept(ExprVisitor<R> v) { return v.visitDiv(this); }
+    public <R> R accept(ExprVisitor<R> v) { return v.visitDiv(this); }
 }
 
 class FloatExpr extends Expr {
-    protected final float literal;
+    private final float value;
 
-    public FloatExpr(float f) { this.literal = f; }
+    public FloatExpr(float value) { this.value = value; }
 
-    public float getLiteral() { return literal; }
-
-    @Override
-    float eval() { return literal; }
+    public float getValue() { return value; }
 
     @Override
-    <R> R accept(ExprVisitor<R> v) { return v.visitFloat(this); }
+    public float eval() { return value; }
+
+    @Override
+    public <R> R accept(ExprVisitor<R> v) { return v.visitFloat(this); }
 }
