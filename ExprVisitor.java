@@ -1,7 +1,9 @@
 package src;
 
 public interface ExprVisitor<R> {
-    /*
-     * Part 2: Implement the visitor pattern for expressions
-     */
+    R visitPlus(PlusExpr e);
+    R visitMinus(MinusExpr e);
+    R visitTimes(TimesExpr e);
+    R visitDiv(DivExpr e);
+    R visitFloat(FloatExpr e);
 }
